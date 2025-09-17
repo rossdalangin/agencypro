@@ -401,6 +401,7 @@ img {
 /*--------------------------------------------------------------
 # Blog / Masonry
 --------------------------------------------------------------*/
+.services-masonry-grid,
 .blog-masonry-grid {
     column-count: 3;
     column-gap: 20px;
@@ -493,6 +494,13 @@ img {
     margin-bottom: 40px;
     border-radius: 8px;
     overflow: hidden;
+    max-height: 400px;
+}
+
+.service-single-page .post-thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 
