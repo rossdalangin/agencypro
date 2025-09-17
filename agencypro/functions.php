@@ -278,7 +278,19 @@ function agencypro_dynamic_css() {
     // --- Hamburger Icon Color ---
     $hamburger_icon_color = agencypro_is_color_light($header_bg_color) ? '#121212' : '#ffffff';
     $css .= "
-        .menu-toggle .line { background-color: " . esc_attr($hamburger_icon_color) . "; }
+        @media (max-width: 992px) {
+            .menu-toggle .line { background-color: " . esc_attr($hamburger_icon_color) . "; }
+        }
+    ";
+
+    // --- Mobile Menu Colors ---
+    $mobile_menu_bg = get_theme_mod('agencypro_mobile_menu_bg_color', '#1e1e1e');
+    $mobile_menu_link_color = agencypro_is_color_light($mobile_menu_bg) ? '#121212' : '#ffffff';
+    $css .= "
+        @media (max-width: 992px) {
+            .main-navigation ul { background-color: " . esc_attr($mobile_menu_bg) . "; }
+            .main-navigation ul a { color: " . esc_attr($mobile_menu_link_color) . "; }
+        }
     ";
 
     // --- Generate Section Background CSS ---
