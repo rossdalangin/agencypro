@@ -52,37 +52,74 @@
 
 
     /**
-     * Portfolio AJAX Filter
+     * Portfolio AJAX Filter & Load More
      */
+    var currentPage = 1;
+    var currentTerm = 'all';
+    var container = $('#portfolio-grid-container');
+    var loadMoreButton = $('#load-more-projects');
+
+    // Filter button click
     $('#portfolio-filter-menu .filter-button').on('click', function(e) {
         e.preventDefault();
+
+        currentPage = 1;
+        currentTerm = $(this).data('term');
 
         // Active button class
         $('#portfolio-filter-menu .filter-button').removeClass('active');
         $(this).addClass('active');
 
-        var term = $(this).data('term');
-        var container = $('#portfolio-grid-container');
+        loadProjects(true); // true to replace content
+    });
 
-        $.ajax({
+    // Load more button click
+    loadMoreButton.on('click', function(e) {
+        e.preventDefault();
+        currentPage++;
+        loadProjects(false); // false to append content
+    });
+
+    function loadProjects(replace) {
+         $.ajax({
             url: agencypro_ajax_obj.ajax_url,
             type: 'post',
+            dataType: 'json',
             data: {
                 action: 'filter_portfolio',
                 nonce: agencypro_ajax_obj.nonce,
-                term: term,
+                term: currentTerm,
+                page: currentPage
             },
             beforeSend: function() {
                 container.addClass('loading');
+                loadMoreButton.text('Loading...');
             },
             success: function(response) {
-                container.html(response);
+                if(response.success) {
+                    var newContent = response.data.html;
+                    if (replace) {
+                        container.html(newContent);
+                    } else {
+                        container.append(newContent);
+                    }
+
+                    // Handle "Load More" button visibility
+                    if (currentPage >= response.data.max_num_pages) {
+                        loadMoreButton.hide();
+                    } else {
+                        loadMoreButton.show();
+                    }
+                } else {
+                    loadMoreButton.hide();
+                }
             },
             complete: function() {
                 container.removeClass('loading');
+                loadMoreButton.text('Load More');
             }
         });
-    });
+    }
 
         // Example: Smooth scroll for anchor links
         $('a[href*="#"]:not([href="#"])').click(function() {

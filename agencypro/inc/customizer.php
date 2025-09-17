@@ -221,6 +221,27 @@ function agencypro_customize_register( $wp_customize ) {
         'type'    => 'url',
     ) );
 
+    // --- Secondary Button ---
+    $wp_customize->add_setting( 'agencypro_hero_button_text_2', array(
+        'default'           => __( 'Learn More', 'agencypro' ),
+        'sanitize_callback' => 'sanitize_text_field',
+    ) );
+    $wp_customize->add_control( 'agencypro_hero_button_text_2', array(
+        'label'   => __( 'Secondary Button Text', 'agencypro' ),
+        'section' => 'agencypro_hero_section',
+        'type'    => 'text',
+    ) );
+
+    $wp_customize->add_setting( 'agencypro_hero_button_url_2', array(
+        'default'           => '',
+        'sanitize_callback' => 'esc_url_raw',
+    ) );
+    $wp_customize->add_control( 'agencypro_hero_button_url_2', array(
+        'label'   => __( 'Secondary Button URL', 'agencypro' ),
+        'section' => 'agencypro_hero_section',
+        'type'    => 'url',
+    ) );
+
     // Client Logos Section
     $wp_customize->add_section( 'agencypro_clients_section', array(
         'title'    => __( 'Client Logos Section', 'agencypro' ),
@@ -275,10 +296,10 @@ function agencypro_customize_register( $wp_customize ) {
         'sanitize_callback' => 'wp_kses_post',
     ) );
     $wp_customize->add_control( new WP_Customize_Media_Control( $wp_customize, 'agencypro_clients_gallery', array(
-        'label'       => __( 'Client Logos', 'agencypro' ),
+        'label'       => __( 'Client Logos Gallery', 'agencypro' ),
         'section'     => 'agencypro_clients_section',
         'mime_type'   => 'image',
-        'description' => __( 'Upload multiple client logos. They will be displayed in a horizontal scroller.', 'agencypro' ),
+        'description' => __( 'Click "Add new media" and select multiple images from the Media Library by holding down the Ctrl (PC) or Cmd (Mac) key. The selected images will form your client logo gallery.', 'agencypro' ),
     ) ) );
 
     // Services Preview Section

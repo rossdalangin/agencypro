@@ -30,12 +30,19 @@ get_header();
         $hero_subheadline = get_theme_mod( 'agencypro_hero_subheadline', __( 'We are a team of creatives who are excited about unique ideas and help digital and fin-tech companies to create amazing identity by crafting top-notch UI/UX.', 'agencypro' ) );
         $hero_button_text = get_theme_mod( 'agencypro_hero_button_text', __( 'Get a Quote', 'agencypro' ) );
         $hero_button_url = get_theme_mod( 'agencypro_hero_button_url', '#' );
+        $hero_button_text_2 = get_theme_mod( 'agencypro_hero_button_text_2', 'Learn More' );
+        $hero_button_url_2 = get_theme_mod( 'agencypro_hero_button_url_2', '' );
         ?>
         <section id="hero" class="homepage-section hero-section">
             <div class="container">
                 <h1 class="hero-headline"><?php echo esc_html( $hero_headline ); ?></h1>
                 <p class="hero-subheadline"><?php echo esc_html( $hero_subheadline ); ?></p>
-                <a href="<?php echo esc_url( $hero_button_url ); ?>" class="button button-primary"><?php echo esc_html( $hero_button_text ); ?></a>
+                <div class="hero-buttons">
+                    <a href="<?php echo esc_url( $hero_button_url ); ?>" class="button button-primary"><?php echo esc_html( $hero_button_text ); ?></a>
+                    <?php if ( ! empty( $hero_button_url_2 ) && ! empty( $hero_button_text_2 ) ) : ?>
+                        <a href="<?php echo esc_url( $hero_button_url_2 ); ?>" class="button button-secondary"><?php echo esc_html( $hero_button_text_2 ); ?></a>
+                    <?php endif; ?>
+                </div>
             </div>
         </section>
         <?php
@@ -96,7 +103,8 @@ get_header();
                                 <div class="service-icon"><i class="<?php echo esc_attr( $icon_class ); ?>"></i></div>
                             <?php endif; ?>
                             <h3 class="service-title"><?php the_title(); ?></h3>
-                            <div class="service-content"><?php the_content(); ?></div>
+                        <div class="service-content"><?php the_excerpt(); ?></div>
+                        <a href="<?php the_permalink(); ?>" class="button button-secondary"><?php esc_html_e( 'Learn More', 'agencypro' ); ?></a>
                         </div>
                     <?php endwhile; wp_reset_postdata(); ?>
                 </div>

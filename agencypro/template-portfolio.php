@@ -34,39 +34,31 @@ get_header();
 
         <div id="portfolio-grid-container">
             <?php
+            $paged = 1;
             $portfolio_query = new WP_Query( array(
                 'post_type'      => 'project',
-                'posts_per_page' => -1, // Show all projects initially
+                'posts_per_page' => 6,
+                'paged'          => $paged,
             ) );
 
             if ( $portfolio_query->have_posts() ) :
                 while ( $portfolio_query->have_posts() ) : $portfolio_query->the_post();
-                    ?>
-                    <a href="<?php the_permalink(); ?>" class="portfolio-item">
-                        <?php if ( has_post_thumbnail() ) : ?>
-                            <div class="portfolio-image"><?php the_post_thumbnail('large'); ?></div>
-                        <?php endif; ?>
-                        <div class="portfolio-overlay">
-                            <h3 class="portfolio-title"><?php the_title(); ?></h3>
-                             <span class="portfolio-category">
-                                <?php
-                                $project_terms = get_the_terms( get_the_ID(), 'service_type' );
-                                if ( $project_terms && ! is_wp_error( $project_terms ) ) {
-                                    $term_names = wp_list_pluck( $project_terms, 'name' );
-                                    echo esc_html( implode( ', ', $term_names ) );
-                                }
-                                ?>
-                            </span>
-                        </div>
-                    </a>
-                    <?php
+                    get_template_part('template-parts/content', 'project');
                 endwhile;
-                wp_reset_postdata();
             else :
                 echo '<p>' . esc_html__( 'No projects found.', 'agencypro' ) . '</p>';
             endif;
             ?>
         </div><!-- #portfolio-grid-container -->
+
+        <?php if ( $portfolio_query->max_num_pages > 1 ) : ?>
+            <div class="load-more-container">
+                <button id="load-more-projects" class="button button-primary" data-page="1" data-max-pages="<?php echo $portfolio_query->max_num_pages; ?>">
+                    <?php esc_html_e( 'Load More', 'agencypro' ); ?>
+                </button>
+            </div>
+        <?php endif; ?>
+        <?php wp_reset_postdata(); ?>
     </div><!-- .container -->
 </main><!-- #main -->
 

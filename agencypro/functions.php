@@ -180,10 +180,12 @@ function agencypro_filter_portfolio() {
     }
 
     $term_slug = sanitize_text_field( $_POST['term'] );
+    $page = isset( $_POST['page'] ) ? absint( $_POST['page'] ) : 1;
 
     $args = array(
         'post_type'      => 'project',
-        'posts_per_page' => -1,
+        'posts_per_page' => 6,
+        'paged'          => $page,
     );
 
     if ( $term_slug !== 'all' ) {
@@ -198,35 +200,25 @@ function agencypro_filter_portfolio() {
 
     $query = new WP_Query( $args );
 
+    ob_start();
     if ( $query->have_posts() ) {
         while ( $query->have_posts() ) {
             $query->the_post();
-            ?>
-            <a href="<?php the_permalink(); ?>" class="portfolio-item">
-                <?php if ( has_post_thumbnail() ) : ?>
-                    <div class="portfolio-image"><?php the_post_thumbnail('large'); ?></div>
-                <?php endif; ?>
-                <div class="portfolio-overlay">
-                    <h3 class="portfolio-title"><?php the_title(); ?></h3>
-                    <span class="portfolio-category">
-                        <?php
-                        $project_terms = get_the_terms( get_the_ID(), 'service_type' );
-                        if ( $project_terms && ! is_wp_error( $project_terms ) ) {
-                            $term_names = wp_list_pluck( $project_terms, 'name' );
-                            echo esc_html( implode( ', ', $term_names ) );
-                        }
-                        ?>
-                    </span>
-                </div>
-            </a>
-            <?php
+            get_template_part('template-parts/content', 'project');
         }
-        wp_reset_postdata();
     } else {
-        echo '<p class="no-results">' . esc_html__( 'No projects found in this category.', 'agencypro' ) . '</p>';
+        if ( $page === 1 ) {
+            echo '<p class="no-results">' . esc_html__( 'No projects found in this category.', 'agencypro' ) . '</p>';
+        }
     }
+    $html = ob_get_clean();
 
-    wp_die();
+    wp_reset_postdata();
+
+    wp_send_json_success( array(
+        'html' => $html,
+        'max_num_pages' => $query->max_num_pages
+    ) );
 }
 add_action( 'wp_ajax_filter_portfolio', 'agencypro_filter_portfolio' );
 add_action( 'wp_ajax_nopriv_filter_portfolio', 'agencypro_filter_portfolio' );
@@ -268,7 +260,7 @@ function agencypro_dynamic_css() {
         switch ($bg_type) {
             case 'color':
                 $bg_color = get_theme_mod( "agencypro_{$section}_bg_color", '#1e1e1e' );
-                $css .= "{$selector} { background-color: " . esc_attr($bg_color) . "; } \n";
+                $css .= "{$selector} { background: " . esc_attr($bg_color) . "; } \n";
                 break;
 
             case 'image':
@@ -282,6 +274,12 @@ function agencypro_dynamic_css() {
                 $grad_1 = get_theme_mod( "agencypro_{$section}_bg_gradient_1", '#1e1e1e' );
                 $grad_2 = get_theme_mod( "agencypro_{$section}_bg_gradient_2", '#121212' );
                 $css .= "{$selector} { background-image: linear-gradient(to right, " . esc_attr($grad_1) . ", " . esc_attr($grad_2) . "); } \n";
+                break;
+
+            case 'none':
+            default:
+                // Do nothing, ensuring a transparent background.
+                $css .= "{$selector} { background: none; } \n";
                 break;
         }
     }

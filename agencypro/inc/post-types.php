@@ -79,7 +79,7 @@ if ( ! function_exists('agencypro_register_post_types') ) {
             'label'                 => __( 'Service', 'agencypro' ),
             'description'           => __( 'Services offered', 'agencypro' ),
             'labels'                => $labels_service,
-            'supports'              => array( 'title', 'editor', 'custom-fields' ), // Added 'custom-fields' for icon class
+            'supports'              => array( 'title', 'editor', 'thumbnail', 'custom-fields' ), // Added 'thumbnail' and 'custom-fields' for icon class
             'hierarchical'          => false,
             'public'                => true,
             'show_ui'               => true,

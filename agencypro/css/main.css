@@ -93,6 +93,23 @@ h3 { font-size: 1.75em; }
     color: var(--color-primary);
 }
 
+.button-secondary {
+    background-color: transparent;
+    color: #fff;
+    border-color: #fff;
+}
+
+.button-secondary:hover {
+    background-color: #fff;
+    color: var(--color-dark-bg);
+}
+
+.hero-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
 img {
     max-width: 100%;
     height: auto;
@@ -308,10 +325,52 @@ img {
 /*--------------------------------------------------------------
 # Portfolio Page
 --------------------------------------------------------------*/
-#portfolio-filter-menu { margin-bottom: 40px; text-align: center; }
-.filter-button { background: transparent; border: 1px solid var(--color-dark-text-secondary); color: var(--color-dark-text-secondary); padding: 10px 20px; margin: 5px; border-radius: 5px; cursor: pointer; transition: all 0.3s ease; }
-.filter-button.active, .filter-button:hover { background-color: var(--color-primary); border-color: var(--color-primary); color: #fff; }
+#portfolio-filter-menu {
+    margin-bottom: 50px;
+    text-align: center;
+    border-bottom: 1px solid #333;
+}
+.filter-button {
+    background: transparent;
+    border: none;
+    color: var(--color-dark-text-secondary);
+    padding: 15px 25px;
+    margin: 0 5px -1px 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1em;
+    font-weight: 700;
+    border-bottom: 3px solid transparent;
+}
+.filter-button.active, .filter-button:hover {
+    color: #fff;
+    border-bottom-color: var(--color-primary);
+}
+
+#portfolio-grid-container {
+    column-count: 3;
+    column-gap: 20px;
+}
+#portfolio-grid-container .portfolio-item {
+    display: inline-block;
+    width: 100%;
+    margin-bottom: 20px;
+    break-inside: avoid;
+}
+
 #portfolio-grid-container.loading { opacity: 0.5; }
+
+@media (max-width: 992px) {
+    #portfolio-grid-container {
+        column-count: 2;
+    }
+}
+
+@media (max-width: 768px) {
+    #portfolio-grid-container {
+        column-count: 1;
+    }
+}
 
 /*--------------------------------------------------------------
 # Blog / Masonry
