@@ -134,8 +134,6 @@ function agencypro_customize_register( $wp_customize ) {
     $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'agencypro_header_bg_color', ['label' => 'Header Background Color', 'section' => 'agencypro_header_section']));
     $wp_customize->add_setting( 'agencypro_header_link_color', ['default' => '#e0e0e0', 'sanitize_callback' => 'sanitize_hex_color']);
     $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'agencypro_header_link_color', ['label' => 'Header Link Color', 'section' => 'agencypro_header_section']));
-    $wp_customize->add_setting( 'agencypro_mobile_menu_bg_color', ['default' => '#1e1e1e', 'sanitize_callback' => 'sanitize_hex_color']);
-    $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'agencypro_mobile_menu_bg_color', ['label' => 'Mobile Menu Background Color', 'section' => 'agencypro_header_section']));
 
     // Footer Section
     $wp_customize->add_section( 'agencypro_footer_section', array('title' => 'Footer', 'panel' => 'agencypro_header_footer_panel'));
