@@ -22,11 +22,6 @@ if ( ! $query->have_posts() ) { return; }
                         </div>
                     <?php endif; ?>
                     <div class="service-item-content">
-                        <?php
-                        $icon_class = get_post_meta( get_the_ID(), 'icon_class', true );
-                        if ( $icon_class ) : ?>
-                            <div class="service-icon"><i class="<?php echo esc_attr( $icon_class ); ?>"></i></div>
-                        <?php endif; ?>
                         <h3 class="service-title"><?php the_title(); ?></h3>
                         <div class="service-content"><?php the_excerpt(); ?></div>
                         <a href="<?php the_permalink(); ?>" class="button button-secondary"><?php esc_html_e( 'Learn More', 'agencypro' ); ?></a>

@@ -1,13 +1,11 @@
 <?php
 /**
  * Template part for displaying the Hero section on the homepage.
- *
  * @package AgencyPro
  */
-
-$headline = get_theme_mod( 'agencypro_hero_headline', __( 'We Don\'t Just Build Websites. We Build Businesses.', 'agencypro' ) );
-$subheadline = get_theme_mod( 'agencypro_hero_subheadline', __( 'We are a team of creatives who are excited about unique ideas...', 'agencypro' ) );
-$button_text = get_theme_mod( 'agencypro_hero_button_text', __( 'Get a Quote', 'agencypro' ) );
+$headline = get_theme_mod( 'agencypro_hero_headline', 'We Build Businesses.' );
+$subheadline = get_theme_mod( 'agencypro_hero_subheadline', 'We are a team of creatives.' );
+$button_text = get_theme_mod( 'agencypro_hero_button_text', 'Get a Quote' );
 $button_url = get_theme_mod( 'agencypro_hero_button_url', '#' );
 $button_text_2 = get_theme_mod( 'agencypro_hero_button_text_2', 'Learn More' );
 $button_url_2 = get_theme_mod( 'agencypro_hero_button_url_2', '' );

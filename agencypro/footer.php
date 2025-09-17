@@ -7,16 +7,11 @@
 	</div><!-- #content -->
 	<footer id="colophon" class="site-footer">
         <div class="footer-widgets container">
-            <?php if ( is_active_sidebar( 'footer-1' ) ) : ?>
-                <?php dynamic_sidebar( 'footer-1' ); ?>
-            <?php endif; ?>
+            <?php if ( is_active_sidebar( 'footer-1' ) ) { dynamic_sidebar( 'footer-1' ); } ?>
         </div>
 		<div class="site-info">
             <div class="container">
-                <?php
-                $copyright_text = get_theme_mod( 'agencypro_copyright_text', '© 2025 AgencyPro' );
-                echo esc_html( $copyright_text );
-                ?>
+                <?php echo esc_html( get_theme_mod( 'agencypro_copyright_text', '© 2025 AgencyPro' ) ); ?>
             </div>
 		</div><!-- .site-info -->
 	</footer><!-- #colophon -->
