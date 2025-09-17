@@ -1,11 +1,9 @@
 <?php
 /**
  * Template part for displaying the Client Logos section on the homepage.
- *
  * @package AgencyPro
  */
-
-$headline = get_theme_mod( 'agencypro_clients_headline', __( 'Trusted By The World\'s Best', 'agencypro' ) );
+$headline = get_theme_mod( 'agencypro_clients_headline', 'Trusted By The Best' );
 ?>
 <section id="clients" class="homepage-section clients-section">
     <div class="container">
