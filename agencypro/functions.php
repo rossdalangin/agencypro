@@ -275,6 +275,12 @@ function agencypro_dynamic_css() {
         .site-footer a { color: " . esc_attr($footer_link_color) . "; }
     ";
 
+    // --- Hamburger Icon Color ---
+    $hamburger_icon_color = agencypro_is_color_light($header_bg_color) ? '#121212' : '#ffffff';
+    $css .= "
+        .menu-toggle .line { background-color: " . esc_attr($hamburger_icon_color) . "; }
+    ";
+
     // --- Generate Section Background CSS ---
     $sections = array('hero', 'clients', 'services', 'portfolio', 'promo', 'testimonials', 'cta');
 
@@ -313,3 +319,25 @@ function agencypro_dynamic_css() {
     }
 }
 add_action( 'wp_enqueue_scripts', 'agencypro_dynamic_css' );
+
+/**
+ * Determines if a given hex color is light or dark.
+ *
+ * @param string $hex The hex color code.
+ * @return bool True if light, false if dark.
+ */
+function agencypro_is_color_light( $hex ) {
+    $hex = str_replace( '#', '', $hex );
+    if ( strlen( $hex ) == 3 ) {
+        $r = hexdec( substr( $hex, 0, 1 ) . substr( $hex, 0, 1 ) );
+        $g = hexdec( substr( $hex, 1, 1 ) . substr( $hex, 1, 1 ) );
+        $b = hexdec( substr( $hex, 2, 1 ) . substr( $hex, 2, 1 ) );
+    } else {
+        $r = hexdec( substr( $hex, 0, 2 ) );
+        $g = hexdec( substr( $hex, 2, 2 ) );
+        $b = hexdec( substr( $hex, 4, 2 ) );
+    }
+    // Formula to determine perceived brightness
+    $luminance = ( ( $r * 299 ) + ( $g * 587 ) + ( $b * 114 ) ) / 1000;
+    return $luminance > 128;
+}

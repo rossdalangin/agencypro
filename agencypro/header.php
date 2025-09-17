@@ -45,7 +45,11 @@
             </div><!-- .site-branding -->
 
             <nav id="site-navigation" class="main-navigation">
-                <button class="menu-toggle" aria-controls="primary-menu" aria-expanded="false"><?php esc_html_e( 'Menu', 'agencypro' ); ?></button>
+                <button class="menu-toggle" aria-controls="primary-menu" aria-expanded="false">
+                    <span class="line"></span>
+                    <span class="line"></span>
+                    <span class="line"></span>
+                </button>
                 <?php
                 wp_nav_menu(
                     array(
