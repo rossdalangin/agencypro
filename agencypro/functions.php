@@ -142,8 +142,15 @@ function agencypro_scripts() {
 	// Main theme stylesheet
 	wp_enqueue_style( 'agencypro-main-style', get_template_directory_uri() . '/css/main.css', array(), AGENCYPRO_VERSION );
 
-    // Google Fonts - Montserrat
-    wp_enqueue_style( 'agencypro-fonts', 'https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap', array(), null );
+    // Google Fonts - Dynamic
+    $heading_font = get_theme_mod('agencypro_heading_font_family', 'Montserrat');
+    // For simplicity, we assume the body font is always Montserrat for now.
+    $font_families = array(
+        'Montserrat:wght@400;700',
+        $heading_font . ':wght@700',
+    );
+    $fonts_url = 'https://fonts.googleapis.com/css2?family=' . implode('&family=', array_unique($font_families)) . '&display=swap';
+    wp_enqueue_style( 'agencypro-fonts', $fonts_url, array(), null );
 
     // Main JS file
 	wp_enqueue_script( 'agencypro-main-js', get_template_directory_uri() . '/js/main.js', array( 'jquery' ), AGENCYPRO_VERSION, true );
@@ -241,13 +248,31 @@ function agencypro_dynamic_css() {
     $body_text_color = get_theme_mod( 'agencypro_body_text_color', '#e0e0e0' );
     $heading_text_color = get_theme_mod( 'agencypro_heading_text_color', '#ffffff' );
 
+    $heading_font_family = get_theme_mod('agencypro_heading_font_family', 'Montserrat');
+
     $css .= "
         body, :root {
             --color-dark-text: " . esc_attr($body_text_color) . ";
         }
         h1, h2, h3, h4, h5, h6 {
             color: " . esc_attr($heading_text_color) . ";
+            font-family: '" . esc_attr($heading_font_family) . "', sans-serif;
         }
+    ";
+
+    // --- Header & Footer Colors ---
+    $header_bg_color = get_theme_mod('agencypro_header_bg_color', '#1e1e1e');
+    $header_link_color = get_theme_mod('agencypro_header_link_color', '#e0e0e0');
+    $footer_bg_color = get_theme_mod('agencypro_footer_bg_color', '#1e1e1e');
+    $footer_text_color = get_theme_mod('agencypro_footer_text_color', '#a0a0a0');
+    $footer_link_color = get_theme_mod('agencypro_footer_link_color', '#ffffff');
+
+    $css .= "
+        .site-header { background-color: " . esc_attr($header_bg_color) . "; }
+        .site-header .main-navigation a, .site-header .site-title a { color: " . esc_attr($header_link_color) . "; }
+        .site-footer { background-color: " . esc_attr($footer_bg_color) . "; }
+        .site-footer, .site-footer .widget-title { color: " . esc_attr($footer_text_color) . "; }
+        .site-footer a { color: " . esc_attr($footer_link_color) . "; }
     ";
 
     // --- Generate Section Background CSS ---
@@ -278,8 +303,7 @@ function agencypro_dynamic_css() {
 
             case 'none':
             default:
-                // Do nothing, ensuring a transparent background.
-                $css .= "{$selector} { background: none; } \n";
+                $css .= "{$selector} { background: none !important; } \n";
                 break;
         }
     }
