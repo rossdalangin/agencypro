@@ -454,6 +454,10 @@ img {
 /*--------------------------------------------------------------
 # Single Post Layout
 --------------------------------------------------------------*/
+.single .post .alignwide {
+    margin-bottom: 30px;
+}
+
 .single-post-layout {
     display: grid;
     grid-template-columns: 1fr;
