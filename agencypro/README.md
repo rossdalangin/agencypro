@@ -1,20 +1,22 @@
 # AgencyPro WordPress Theme
 
-AgencyPro is a modern, vibrant, and conversion-focused WordPress theme designed specifically for digital agencies, marketing firms, and creative studios. It features a dark, bold design, extensive customization options, and a focus on showcasing your work and generating leads.
+AgencyPro is a modern, vibrant, and highly customizable WordPress theme designed specifically for digital agencies, marketing firms, and creative studios. It features a dark, bold design, extensive customization options, and a focus on showcasing your work and generating leads.
 
-**Version:** 1.0.0
+**Version:** 2.0.0
 **Author:** Jules
 
 ---
 
 ## Features
 
-*   **Modern, Responsive Design:** Dark theme built with HTML5, CSS3, and modern JavaScript.
-*   **Conversion-Focused:** Prominent "Get a Quote" calls-to-action to drive lead generation.
-*   **Custom Post Types:** Easy-to-manage sections for your Portfolio (`Projects`) and `Services`.
-*   **AJAX-Powered Portfolio:** A beautiful portfolio page with smooth, category-based filtering that doesn't require a page reload.
-*   **Homepage Built with the Customizer:** A fully widgetized-like homepage controlled entirely through the native WordPress Customizer. No complex page builders required.
-*   **Dynamic & Interactive:** Features subtle animations and micro-interactions to provide a cutting-edge feel.
+*   **Fully Modular Homepage:** Show, hide, and reorder all homepage sections directly from the Customizer.
+*   **Dynamic Section Backgrounds:** Set a unique background for each homepage section: None, Color, Image, or a two-color Gradient.
+*   **Custom Post Types:** Easy-to-manage sections for your Portfolio (`Projects`), `Services`, and `Testimonials`.
+*   **AJAX-Powered Portfolio:** A beautiful portfolio page with smooth, category-based filtering.
+*   **Blog with Masonry Layout:** A modern blog layout that showcases your posts in a stylish masonry grid.
+*   **Sidebar Widget Area:** A dedicated sidebar for your single blog posts.
+*   **Advanced Color & Typography Controls:** Manage your site's primary accent color, body text color, and heading colors.
+*   **Modern, Responsive Design:** Built with HTML5, CSS3, and modern JavaScript for a great experience on all devices.
 
 ---
 
@@ -22,89 +24,79 @@ AgencyPro is a modern, vibrant, and conversion-focused WordPress theme designed 
 
 1.  **Package the Theme:**
     *   Navigate to the root directory containing the `agencypro` theme folder.
-    *   Compress the `agencypro` folder into a `.zip` file. Make sure you are zipping the folder itself, not the files inside it. The final file should be named `agencypro.zip`.
+    *   Compress the `agencypro` folder into a `.zip` file. The final file should be named `agencypro.zip`.
 
 2.  **Install the Theme:**
     *   In your WordPress dashboard, navigate to `Appearance` > `Themes`.
     *   Click `Add New`, then `Upload Theme`.
-    *   Choose the `agencypro.zip` file you just created and click `Install Now`.
-    *   After the installation is complete, click `Activate`.
+    *   Choose the `agencypro.zip` file and click `Install Now`.
+    *   Click `Activate`.
 
 ---
 
 ## Configuring the Theme
 
-Almost all theme options are controlled via the WordPress Customizer. Navigate to `Appearance` > `Customize` to begin.
+All theme options are controlled via the WordPress Customizer. Navigate to `Appearance` > `Customize` to begin.
 
 ### 1. Create Required Pages
 
 1.  **Homepage:**
-    *   Go to `Pages` > `Add New`.
-    *   Give the page a title, like "Home".
-    *   In the "Page Attributes" panel on the right, select the **Homepage** template from the "Template" dropdown.
-    *   Click `Publish`.
+    *   Go to `Pages` > `Add New`. Title it "Home".
+    *   Under "Page Attributes", select the **Homepage** template.
+    *   `Publish`.
 2.  **Portfolio Page:**
-    *   Go to `Pages` > `Add New`.
-    *   Give the page a title, like "Our Work" or "Portfolio".
-    *   In the "Page Attributes" panel, select the **Portfolio** template.
-    *   Click `Publish`.
-3.  **Set the Homepage:**
+    *   Go to `Pages` > `Add New`. Title it "Portfolio".
+    *   Under "Page Attributes", select the **Portfolio** template.
+    *   `Publish`.
+3.  **Blog Page:**
+    *   Go to `Pages` > `Add New`. Title it "Blog" or "News". You do not need to select a template.
+    *   `Publish`.
+4.  **Set Static Pages:**
     *   Go to `Settings` > `Reading`.
     *   Set "Your homepage displays" to **A static page**.
     *   For "Homepage", select the "Home" page you created.
+    *   For "Posts page", select the "Blog" page you created.
     *   Save your changes.
 
-### 2. Add Your Content
+### 2. Add Your Content (CPTs)
 
-The theme's dynamic content is managed through Custom Post Types.
+*   **Services (`Dashboard > Services`):** Add your company's services here. Use the "Custom Fields" box to add an `icon_class` for display.
+*   **Portfolio (`Dashboard > Portfolio`):** Add your case studies. Set a **Featured Image** (crucial for display) and assign a **Service Type**.
+*   **Testimonials (`Dashboard > Testimonials`):** Add client testimonials. The post title is the author's name, the main content is the testimonial text, and the **Featured Image** is the author's picture.
 
-*   **Services (`Dashboard > Services`):**
-    *   Go to `Services` > `Add New`.
-    *   Add a title (e.g., "Web Design") and a description for each service.
-    *   **To add an icon:** This theme supports icon fonts. In the post editor, find the "Custom Fields" box (you may need to enable it under "Screen Options" at the top). Add a new custom field with the `name` `icon_class` and the `value` being the CSS class of your icon (e.g., `fas fa-laptop-code`).
-*   **Portfolio (`Dashboard > Portfolio`):**
-    *   Go to `Portfolio` > `Add New`.
-    *   Add a title and a detailed case study description.
-    *   Set a **Featured Image** for the project. This is crucial as it's used for the grid and hero images.
-    *   Assign the project to one or more **Service Types**. You can create new service types (e.g., "Branding", "SEO") from this screen, which will automatically appear in the portfolio filter.
+### 3. Customize the Homepage (`Appearance > Customize > Homepage Sections`)
 
-### 3. Customize the Homepage
+This panel gives you full control over the homepage content and layout.
 
-Navigate to `Appearance` > `Customize` and open the **Homepage Sections** panel. Here you can control the content of each section on the homepage.
+*   **Section Order:** This is the most powerful feature. Enter a comma-separated list of section IDs to control their order.
+    *   **Available IDs:** `hero`, `clients`, `services`, `portfolio`, `promo`, `testimonials`, `cta`
+    *   **Example:** `hero,services,promo,cta`
+*   **For Each Section (Hero, Clients, etc.):**
+    *   **Display Section:** Use the checkbox at the top to show or hide the entire section.
+    *   **Background Type:** Choose between `None`, `Color`, `Image`, or `Gradient`. The relevant controls (e.g., color pickers) will appear below based on your choice.
+    *   **Content Fields:** Fill in the headlines, text, and button information for each section. The "Promo" section is a new flexible content block, and the "Call to Action" section now includes a sub-headline field.
 
-*   **Hero Section:** Set the main headline, sub-headline, and the primary call-to-action button.
-*   **Client Logos Section:** Add a headline and upload multiple client logos using the media gallery control.
-*   **Services Preview:** Set the headline and choose how many services to display.
-*   **Portfolio Preview:** Set the headline and choose how many recent projects to show.
-*   **Testimonials:** Fill in the text and author for up to three testimonials.
-*   **Call to Action:** Configure the final CTA block at the bottom of the page.
+### 4. Blog & Sidebar
 
-### 4. General Theme Options
+*   The theme will automatically use a masonry layout for your blog posts on the page you designated in `Settings > Reading`.
+*   To add widgets to your single post sidebar, go to `Appearance` > `Widgets` and drag any widget into the **Blog Sidebar** area.
 
-In `Appearance` > `Customize`, open the **Theme Options** panel.
+### 5. Typography & Colors (`Appearance > Customize > Typography & Colors`)
 
-*   **Colors:** Change the primary accent color used throughout the theme.
-*   **Footer:** Update the copyright text displayed in the site footer.
+*   **Font Colors:** Set the global colors for the body text and all headings (H1-H6).
+*   **Theme Options > Colors:** Control the main accent color used for buttons, links, and highlights.
 
 ---
 
 ## Final Packaging Instructions
 
-To create the installation-ready `.zip` file for this theme, follow these steps:
+To create the installation-ready `.zip` file for this theme:
 
-**Using a command line (on macOS/Linux):**
-
-1.  Make sure you are in the directory that *contains* the `agencypro` folder.
-2.  Run the following command:
-    ```bash
-    zip -r agencypro.zip agencypro/
-    ```
+**Using a command line (macOS/Linux):**
+1.  Navigate to the directory that *contains* the `agencypro` folder.
+2.  Run: `zip -r agencypro.zip agencypro/`
 
 **Using a graphical interface (Windows/macOS):**
-
-1.  Locate the `agencypro` folder.
-2.  Right-click on the folder.
-3.  Select "Compress 'agencypro'" (on macOS) or "Send to > Compressed (zipped) folder" (on Windows).
-4.  Rename the resulting `.zip` file to `agencypro.zip` if it is not already named that.
-
-The resulting `agencypro.zip` is now ready to be uploaded to any WordPress site.
+1.  Right-click on the `agencypro` folder.
+2.  Select "Compress" (macOS) or "Send to > Compressed (zipped) folder" (Windows).
+3.  Rename the file to `agencypro.zip`.

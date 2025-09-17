@@ -159,7 +159,81 @@ img {
     width: 100%;
 }
 
-.menu-toggle { display: none; } /* For mobile */
+.menu-toggle { display: none; }
+
+/* General Layout Refinements */
+.homepage-section {
+    padding: 100px 0;
+}
+
+.section-title {
+    margin-bottom: 60px;
+}
+
+.promo-section.text-align-left,
+.promo-section .section-title {
+    text-align: left;
+}
+
+.promo-section .section-title::after {
+    left: 0;
+    transform: translateX(0);
+}
+
+.section-sub-title {
+    font-size: 1.1em;
+    max-width: 700px;
+    margin: -40px auto 40px;
+    color: var(--color-dark-text-secondary);
+}
+
+.cta-section .section-sub-title {
+    color: rgba(255,255,255,0.8);
+}
+
+
+/* Mobile Experience & Hamburger Menu */
+@media (max-width: 992px) {
+    .menu-toggle {
+        display: block;
+        background: transparent;
+        border: 1px solid #fff;
+        color: #fff;
+        padding: 8px 12px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .main-navigation ul {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: var(--color-dark-surface);
+        flex-direction: column;
+        padding: 10px 0;
+    }
+
+    .main-navigation.toggled ul {
+        display: flex;
+    }
+
+    .main-navigation li {
+        margin: 0;
+        width: 100%;
+    }
+
+    .main-navigation a {
+        padding: 15px 20px;
+        display: block;
+        width: 100%;
+    }
+
+    .site-header .header-cta {
+        display: none; /* Hide header CTA on mobile to save space */
+    }
+}
 
 /*--------------------------------------------------------------
 # Homepage Sections
@@ -238,6 +312,90 @@ img {
 .filter-button { background: transparent; border: 1px solid var(--color-dark-text-secondary); color: var(--color-dark-text-secondary); padding: 10px 20px; margin: 5px; border-radius: 5px; cursor: pointer; transition: all 0.3s ease; }
 .filter-button.active, .filter-button:hover { background-color: var(--color-primary); border-color: var(--color-primary); color: #fff; }
 #portfolio-grid-container.loading { opacity: 0.5; }
+
+/*--------------------------------------------------------------
+# Blog / Masonry
+--------------------------------------------------------------*/
+.blog-masonry-grid {
+    column-count: 3;
+    column-gap: 20px;
+}
+
+.masonry-item {
+    display: inline-block;
+    width: 100%;
+    margin-bottom: 20px;
+    break-inside: avoid;
+}
+
+.masonry-item-inner {
+    background-color: var(--color-dark-surface);
+    border-radius: 8px;
+    overflow: hidden;
+    text-align: left;
+}
+
+.masonry-item .entry-header,
+.masonry-item .entry-summary,
+.masonry-item .entry-footer {
+    padding: 20px;
+}
+
+.masonry-item .entry-title {
+    font-size: 1.25em;
+    margin-bottom: 10px;
+}
+.masonry-item .entry-title a {
+    color: #fff;
+}
+
+.masonry-item .entry-summary {
+    padding-top: 0;
+}
+
+@media (max-width: 992px) {
+    .blog-masonry-grid {
+        column-count: 2;
+    }
+}
+
+@media (max-width: 768px) {
+    .blog-masonry-grid {
+        column-count: 1;
+    }
+}
+
+
+/*--------------------------------------------------------------
+# Single Post Layout
+--------------------------------------------------------------*/
+.single-post-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 40px;
+    padding: 60px 0;
+}
+
+@media (min-width: 992px) {
+    .single-post-layout {
+        grid-template-columns: 1fr 320px;
+    }
+}
+
+#secondary.widget-area .widget {
+    background-color: var(--color-dark-surface);
+    padding: 30px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+}
+
+#secondary.widget-area .widget-title {
+    font-size: 1.2em;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--color-primary);
+}
+
 
 /*--------------------------------------------------------------
 # Single Project Page

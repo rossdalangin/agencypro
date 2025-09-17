@@ -114,6 +114,17 @@ function agencypro_widgets_init() {
 		array(
 			'name'          => esc_html__( 'Footer', 'agencypro' ),
 			'id'            => 'footer-1',
+			'description'   => esc_html__( 'Add widgets here to appear in your footer.', 'agencypro' ),
+			'before_widget' => '<section id="%1$s" class="widget %2$s">',
+			'after_widget'  => '</section>',
+			'before_title'  => '<h2 class="widget-title">',
+			'after_title'   => '</h2>',
+		)
+	);
+	register_sidebar(
+		array(
+			'name'          => esc_html__( 'Blog Sidebar', 'agencypro' ),
+			'id'            => 'blog-sidebar',
 			'description'   => esc_html__( 'Add widgets here.', 'agencypro' ),
 			'before_widget' => '<section id="%1$s" class="widget %2$s">',
 			'after_widget'  => '</section>',
@@ -224,14 +235,59 @@ add_action( 'wp_ajax_nopriv_filter_portfolio', 'agencypro_filter_portfolio' );
  * Add dynamic CSS for Customizer options.
  */
 function agencypro_dynamic_css() {
-    $accent_color = get_theme_mod( 'agencypro_accent_color', '#8e44ad' );
+    $css = '';
 
-    $css = '
+    // --- Get Accent Color ---
+    $accent_color = get_theme_mod( 'agencypro_accent_color', '#8e44ad' );
+    $css .= '
         :root {
             --color-primary: ' . esc_attr( $accent_color ) . ';
         }
     ';
 
-    wp_add_inline_style( 'agencypro-main-style', $css );
+    // --- Get Typography Colors ---
+    $body_text_color = get_theme_mod( 'agencypro_body_text_color', '#e0e0e0' );
+    $heading_text_color = get_theme_mod( 'agencypro_heading_text_color', '#ffffff' );
+
+    $css .= "
+        body, :root {
+            --color-dark-text: " . esc_attr($body_text_color) . ";
+        }
+        h1, h2, h3, h4, h5, h6 {
+            color: " . esc_attr($heading_text_color) . ";
+        }
+    ";
+
+    // --- Generate Section Background CSS ---
+    $sections = array('hero', 'clients', 'services', 'portfolio', 'promo', 'testimonials', 'cta');
+
+    foreach ($sections as $section) {
+        $bg_type = get_theme_mod( "agencypro_{$section}_bg_type", 'none' );
+        $selector = ".homepage-section#{$section}";
+
+        switch ($bg_type) {
+            case 'color':
+                $bg_color = get_theme_mod( "agencypro_{$section}_bg_color", '#1e1e1e' );
+                $css .= "{$selector} { background-color: " . esc_attr($bg_color) . "; } \n";
+                break;
+
+            case 'image':
+                $bg_image = get_theme_mod( "agencypro_{$section}_bg_image", '' );
+                if ( ! empty($bg_image) ) {
+                    $css .= "{$selector} { background-image: url(" . esc_url($bg_image) . "); background-size: cover; background-position: center; } \n";
+                }
+                break;
+
+            case 'gradient':
+                $grad_1 = get_theme_mod( "agencypro_{$section}_bg_gradient_1", '#1e1e1e' );
+                $grad_2 = get_theme_mod( "agencypro_{$section}_bg_gradient_2", '#121212' );
+                $css .= "{$selector} { background-image: linear-gradient(to right, " . esc_attr($grad_1) . ", " . esc_attr($grad_2) . "); } \n";
+                break;
+        }
+    }
+
+    if ( ! empty( $css ) ) {
+        wp_add_inline_style( 'agencypro-main-style', $css );
+    }
 }
 add_action( 'wp_enqueue_scripts', 'agencypro_dynamic_css' );

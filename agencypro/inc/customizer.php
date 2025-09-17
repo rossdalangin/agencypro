@@ -48,7 +48,24 @@ function agencypro_customize_register( $wp_customize ) {
     $wp_customize->add_panel( 'agencypro_homepage_panel', array(
         'title'       => __( 'Homepage Sections', 'agencypro' ),
         'priority'    => 130,
-        'description' => __( 'Manage the content of homepage sections.', 'agencypro' ),
+        'description' => __( 'Manage the content and order of homepage sections.', 'agencypro' ),
+    ) );
+
+    // Section Order
+    $wp_customize->add_section( 'agencypro_section_order_section', array(
+        'title'    => __( 'Section Order', 'agencypro' ),
+        'panel'    => 'agencypro_homepage_panel',
+        'priority' => 5,
+    ) );
+    $wp_customize->add_setting( 'agencypro_section_order', array(
+        'default'           => 'hero,clients,services,portfolio,promo,testimonials,cta',
+        'sanitize_callback' => 'sanitize_text_field',
+    ) );
+    $wp_customize->add_control( 'agencypro_section_order', array(
+        'label'       => __( 'Homepage Section Order', 'agencypro' ),
+        'section'     => 'agencypro_section_order_section',
+        'type'        => 'text',
+        'description' => __( 'Enter the sections in the order you want them to appear, separated by commas. Available sections: hero, clients, services, portfolio, testimonials, cta', 'agencypro' ),
     ) );
 
     // Hero Section
@@ -57,6 +74,93 @@ function agencypro_customize_register( $wp_customize ) {
         'panel'    => 'agencypro_homepage_panel',
         'priority' => 10,
     ) );
+
+    // Display Hero Section
+    $wp_customize->add_setting( 'agencypro_hero_display', array(
+        'default'           => true,
+        'sanitize_callback' => 'wp_validate_boolean',
+    ) );
+    $wp_customize->add_control( 'agencypro_hero_display', array(
+        'label'   => __( 'Display Section', 'agencypro' ),
+        'section' => 'agencypro_hero_section',
+        'type'    => 'checkbox',
+        'priority' => 1,
+    ) );
+
+    // --- Background Controls for Hero Section ---
+    $wp_customize->add_setting( 'agencypro_hero_bg_type', array(
+        'default'           => 'none',
+        'sanitize_callback' => 'sanitize_text_field',
+    ) );
+    $wp_customize->add_control( 'agencypro_hero_bg_type', array(
+        'label'   => __( 'Background Type', 'agencypro' ),
+        'section' => 'agencypro_hero_section',
+        'type'    => 'select',
+        'choices' => array(
+            'none'     => __( 'None', 'agencypro' ),
+            'color'    => __( 'Color', 'agencypro' ),
+            'image'    => __( 'Image', 'agencypro' ),
+            'gradient' => __( 'Gradient', 'agencypro' ),
+        ),
+        'priority' => 2,
+    ) );
+
+    // BG Color
+    $wp_customize->add_setting( 'agencypro_hero_bg_color', array(
+        'default'           => '#1e1e1e',
+        'sanitize_callback' => 'sanitize_hex_color',
+    ) );
+    $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'agencypro_hero_bg_color', array(
+        'label'   => __( 'Background Color', 'agencypro' ),
+        'section' => 'agencypro_hero_section',
+        'active_callback' => function() use ($wp_customize) {
+            return 'color' === $wp_customize->get_setting('agencypro_hero_bg_type')->value();
+        },
+        'priority' => 3,
+    ) ) );
+
+    // BG Image
+    $wp_customize->add_setting( 'agencypro_hero_bg_image', array(
+        'default'           => '',
+        'sanitize_callback' => 'esc_url_raw',
+    ) );
+    $wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, 'agencypro_hero_bg_image', array(
+        'label'   => __( 'Background Image', 'agencypro' ),
+        'section' => 'agencypro_hero_section',
+        'active_callback' => function() use ($wp_customize) {
+            return 'image' === $wp_customize->get_setting('agencypro_hero_bg_type')->value();
+        },
+        'priority' => 3,
+    ) ) );
+
+    // BG Gradient Color 1
+    $wp_customize->add_setting( 'agencypro_hero_bg_gradient_1', array(
+        'default'           => '#1e1e1e',
+        'sanitize_callback' => 'sanitize_hex_color',
+    ) );
+    $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'agencypro_hero_bg_gradient_1', array(
+        'label'   => __( 'Gradient Color 1', 'agencypro' ),
+        'section' => 'agencypro_hero_section',
+        'active_callback' => function() use ($wp_customize) {
+            return 'gradient' === $wp_customize->get_setting('agencypro_hero_bg_type')->value();
+        },
+        'priority' => 3,
+    ) ) );
+
+    // BG Gradient Color 2
+    $wp_customize->add_setting( 'agencypro_hero_bg_gradient_2', array(
+        'default'           => '#121212',
+        'sanitize_callback' => 'sanitize_hex_color',
+    ) );
+    $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'agencypro_hero_bg_gradient_2', array(
+        'label'   => __( 'Gradient Color 2', 'agencypro' ),
+        'section' => 'agencypro_hero_section',
+        'active_callback' => function() use ($wp_customize) {
+            return 'gradient' === $wp_customize->get_setting('agencypro_hero_bg_type')->value();
+        },
+        'priority' => 4,
+    ) ) );
+
 
     // Hero Headline
     $wp_customize->add_setting( 'agencypro_hero_headline', array(
@@ -124,6 +228,31 @@ function agencypro_customize_register( $wp_customize ) {
         'priority' => 20,
     ) );
 
+    // Display Clients Section
+    $wp_customize->add_setting( 'agencypro_clients_display', array(
+        'default'           => true,
+        'sanitize_callback' => 'wp_validate_boolean',
+    ) );
+    $wp_customize->add_control( 'agencypro_clients_display', array(
+        'label'   => __( 'Display Section', 'agencypro' ),
+        'section' => 'agencypro_clients_section',
+        'type'    => 'checkbox',
+        'priority' => 1,
+    ) );
+
+    // --- BG CONTROLS ---
+    $wp_customize->add_setting( 'agencypro_clients_bg_type', ['default' => 'color', 'sanitize_callback' => 'sanitize_text_field']);
+    $wp_customize->add_control( 'agencypro_clients_bg_type', ['label' => __( 'Background Type', 'agencypro' ), 'section' => 'agencypro_clients_section', 'type' => 'select', 'choices' => ['none' => 'None', 'color' => 'Color', 'image' => 'Image', 'gradient' => 'Gradient'], 'priority' => 2]);
+    $wp_customize->add_setting( 'agencypro_clients_bg_color', ['default' => '#1e1e1e', 'sanitize_callback' => 'sanitize_hex_color']);
+    $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'agencypro_clients_bg_color', ['label' => __( 'Background Color', 'agencypro' ), 'section' => 'agencypro_clients_section', 'active_callback' => function() use ($wp_customize) { return 'color' === $wp_customize->get_setting('agencypro_clients_bg_type')->value(); }, 'priority' => 3]));
+    $wp_customize->add_setting( 'agencypro_clients_bg_image', ['default' => '', 'sanitize_callback' => 'esc_url_raw']);
+    $wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, 'agencypro_clients_bg_image', ['label' => __( 'Background Image', 'agencypro' ), 'section' => 'agencypro_clients_section', 'active_callback' => function() use ($wp_customize) { return 'image' === $wp_customize->get_setting('agencypro_clients_bg_type')->value(); }, 'priority' => 3]));
+    $wp_customize->add_setting( 'agencypro_clients_bg_gradient_1', ['default' => '#1e1e1e', 'sanitize_callback' => 'sanitize_hex_color']);
+    $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'agencypro_clients_bg_gradient_1', ['label' => __( 'Gradient Color 1', 'agencypro' ), 'section' => 'agencypro_clients_section', 'active_callback' => function() use ($wp_customize) { return 'gradient' === $wp_customize->get_setting('agencypro_clients_bg_type')->value(); }, 'priority' => 3]));
+    $wp_customize->add_setting( 'agencypro_clients_bg_gradient_2', ['default' => '#121212', 'sanitize_callback' => 'sanitize_hex_color']);
+    $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'agencypro_clients_bg_gradient_2', ['label' => __( 'Gradient Color 2', 'agencypro' ), 'section' => 'agencypro_clients_section', 'active_callback' => function() use ($wp_customize) { return 'gradient' === $wp_customize->get_setting('agencypro_clients_bg_type')->value(); }, 'priority' => 4]));
+
+
     // Clients Headline
     $wp_customize->add_setting( 'agencypro_clients_headline', array(
         'default'           => __( 'Trusted By The World\'s Best', 'agencypro' ),
@@ -158,6 +287,32 @@ function agencypro_customize_register( $wp_customize ) {
         'panel'    => 'agencypro_homepage_panel',
         'priority' => 30,
     ) );
+
+    // Display Services Section
+    $wp_customize->add_setting( 'agencypro_services_display', array(
+        'default'           => true,
+        'sanitize_callback' => 'wp_validate_boolean',
+    ) );
+    $wp_customize->add_control( 'agencypro_services_display', array(
+        'label'   => __( 'Display Section', 'agencypro' ),
+        'section' => 'agencypro_services_section',
+        'type'    => 'checkbox',
+        'priority' => 1,
+    ) );
+
+    // --- BG CONTROLS ---
+    $wp_customize->add_setting( 'agencypro_services_bg_type', ['default' => 'none', 'sanitize_callback' => 'sanitize_text_field']);
+    $wp_customize->add_control( 'agencypro_services_bg_type', ['label' => __( 'Background Type', 'agencypro' ), 'section' => 'agencypro_services_section', 'type' => 'select', 'choices' => ['none' => 'None', 'color' => 'Color', 'image' => 'Image', 'gradient' => 'Gradient'], 'priority' => 2]);
+    $wp_customize->add_setting( 'agencypro_services_bg_color', ['default' => '#1e1e1e', 'sanitize_callback' => 'sanitize_hex_color']);
+    $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'agencypro_services_bg_color', ['label' => __( 'Background Color', 'agencypro' ), 'section' => 'agencypro_services_section', 'active_callback' => function() use ($wp_customize) { return 'color' === $wp_customize->get_setting('agencypro_services_bg_type')->value(); }, 'priority' => 3]));
+    $wp_customize->add_setting( 'agencypro_services_bg_image', ['default' => '', 'sanitize_callback' => 'esc_url_raw']);
+    $wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, 'agencypro_services_bg_image', ['label' => __( 'Background Image', 'agencypro' ), 'section' => 'agencypro_services_section', 'active_callback' => function() use ($wp_customize) { return 'image' === $wp_customize->get_setting('agencypro_services_bg_type')->value(); }, 'priority' => 3]));
+    $wp_customize->add_setting( 'agencypro_services_bg_gradient_1', ['default' => '#1e1e1e', 'sanitize_callback' => 'sanitize_hex_color']);
+    $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'agencypro_services_bg_gradient_1', ['label' => __( 'Gradient Color 1', 'agencypro' ), 'section' => 'agencypro_services_section', 'active_callback' => function() use ($wp_customize) { return 'gradient' === $wp_customize->get_setting('agencypro_services_bg_type')->value(); }, 'priority' => 3]));
+    $wp_customize->add_setting( 'agencypro_services_bg_gradient_2', ['default' => '#121212', 'sanitize_callback' => 'sanitize_hex_color']);
+    $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'agencypro_services_bg_gradient_2', ['label' => __( 'Gradient Color 2', 'agencypro' ), 'section' => 'agencypro_services_section', 'active_callback' => function() use ($wp_customize) { return 'gradient' === $wp_customize->get_setting('agencypro_services_bg_type')->value(); }, 'priority' => 4]));
+
+
     $wp_customize->add_setting( 'agencypro_services_headline', array(
         'default'           => __( 'Our Services', 'agencypro' ),
         'sanitize_callback' => 'agencypro_sanitize_text',
@@ -185,6 +340,32 @@ function agencypro_customize_register( $wp_customize ) {
         'panel'    => 'agencypro_homepage_panel',
         'priority' => 40,
     ) );
+
+    // Display Portfolio Section
+    $wp_customize->add_setting( 'agencypro_portfolio_display', array(
+        'default'           => true,
+        'sanitize_callback' => 'wp_validate_boolean',
+    ) );
+    $wp_customize->add_control( 'agencypro_portfolio_display', array(
+        'label'   => __( 'Display Section', 'agencypro' ),
+        'section' => 'agencypro_portfolio_section',
+        'type'    => 'checkbox',
+        'priority' => 1,
+    ) );
+
+    // --- BG CONTROLS ---
+    $wp_customize->add_setting( 'agencypro_portfolio_bg_type', ['default' => 'color', 'sanitize_callback' => 'sanitize_text_field']);
+    $wp_customize->add_control( 'agencypro_portfolio_bg_type', ['label' => __( 'Background Type', 'agencypro' ), 'section' => 'agencypro_portfolio_section', 'type' => 'select', 'choices' => ['none' => 'None', 'color' => 'Color', 'image' => 'Image', 'gradient' => 'Gradient'], 'priority' => 2]);
+    $wp_customize->add_setting( 'agencypro_portfolio_bg_color', ['default' => '#1e1e1e', 'sanitize_callback' => 'sanitize_hex_color']);
+    $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'agencypro_portfolio_bg_color', ['label' => __( 'Background Color', 'agencypro' ), 'section' => 'agencypro_portfolio_section', 'active_callback' => function() use ($wp_customize) { return 'color' === $wp_customize->get_setting('agencypro_portfolio_bg_type')->value(); }, 'priority' => 3]));
+    $wp_customize->add_setting( 'agencypro_portfolio_bg_image', ['default' => '', 'sanitize_callback' => 'esc_url_raw']);
+    $wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, 'agencypro_portfolio_bg_image', ['label' => __( 'Background Image', 'agencypro' ), 'section' => 'agencypro_portfolio_section', 'active_callback' => function() use ($wp_customize) { return 'image' === $wp_customize->get_setting('agencypro_portfolio_bg_type')->value(); }, 'priority' => 3]));
+    $wp_customize->add_setting( 'agencypro_portfolio_bg_gradient_1', ['default' => '#1e1e1e', 'sanitize_callback' => 'sanitize_hex_color']);
+    $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'agencypro_portfolio_bg_gradient_1', ['label' => __( 'Gradient Color 1', 'agencypro' ), 'section' => 'agencypro_portfolio_section', 'active_callback' => function() use ($wp_customize) { return 'gradient' === $wp_customize->get_setting('agencypro_portfolio_bg_type')->value(); }, 'priority' => 3]));
+    $wp_customize->add_setting( 'agencypro_portfolio_bg_gradient_2', ['default' => '#121212', 'sanitize_callback' => 'sanitize_hex_color']);
+    $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'agencypro_portfolio_bg_gradient_2', ['label' => __( 'Gradient Color 2', 'agencypro' ), 'section' => 'agencypro_portfolio_section', 'active_callback' => function() use ($wp_customize) { return 'gradient' === $wp_customize->get_setting('agencypro_portfolio_bg_type')->value(); }, 'priority' => 4]));
+
+
     $wp_customize->add_setting( 'agencypro_portfolio_headline', array(
         'default'           => __( 'Recent Work', 'agencypro' ),
         'sanitize_callback' => 'agencypro_sanitize_text',
@@ -206,12 +387,66 @@ function agencypro_customize_register( $wp_customize ) {
         'input_attrs' => array( 'min' => 1, 'max' => 8, 'step' => 1 ),
     ) );
 
+    // Promo Section
+    $wp_customize->add_section( 'agencypro_promo_section', array(
+        'title'    => __( 'Promo Section', 'agencypro' ),
+        'panel'    => 'agencypro_homepage_panel',
+        'priority' => 45,
+    ) );
+    $wp_customize->add_setting( 'agencypro_promo_display', ['default' => true, 'sanitize_callback' => 'wp_validate_boolean']);
+    $wp_customize->add_control( 'agencypro_promo_display', ['label' => __( 'Display Section', 'agencypro' ), 'section' => 'agencypro_promo_section', 'type' => 'checkbox', 'priority' => 1]);
+    $wp_customize->add_setting( 'agencypro_promo_bg_type', ['default' => 'none', 'sanitize_callback' => 'sanitize_text_field']);
+    $wp_customize->add_control( 'agencypro_promo_bg_type', ['label' => __( 'Background Type', 'agencypro' ), 'section' => 'agencypro_promo_section', 'type' => 'select', 'choices' => ['none' => 'None', 'color' => 'Color', 'image' => 'Image', 'gradient' => 'Gradient'], 'priority' => 2]);
+    $wp_customize->add_setting( 'agencypro_promo_bg_color', ['default' => '#1e1e1e', 'sanitize_callback' => 'sanitize_hex_color']);
+    $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'agencypro_promo_bg_color', ['label' => __( 'Background Color', 'agencypro' ), 'section' => 'agencypro_promo_section', 'active_callback' => function() use ($wp_customize) { return 'color' === $wp_customize->get_setting('agencypro_promo_bg_type')->value(); }, 'priority' => 3]));
+    $wp_customize->add_setting( 'agencypro_promo_bg_image', ['default' => '', 'sanitize_callback' => 'esc_url_raw']);
+    $wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, 'agencypro_promo_bg_image', ['label' => __( 'Background Image', 'agencypro' ), 'section' => 'agencypro_promo_section', 'active_callback' => function() use ($wp_customize) { return 'image' === $wp_customize->get_setting('agencypro_promo_bg_type')->value(); }, 'priority' => 3]));
+    $wp_customize->add_setting( 'agencypro_promo_bg_gradient_1', ['default' => '#1e1e1e', 'sanitize_callback' => 'sanitize_hex_color']);
+    $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'agencypro_promo_bg_gradient_1', ['label' => __( 'Gradient Color 1', 'agencypro' ), 'section' => 'agencypro_promo_section', 'active_callback' => function() use ($wp_customize) { return 'gradient' === $wp_customize->get_setting('agencypro_promo_bg_type')->value(); }, 'priority' => 3]));
+    $wp_customize->add_setting( 'agencypro_promo_bg_gradient_2', ['default' => '#121212', 'sanitize_callback' => 'sanitize_hex_color']);
+    $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'agencypro_promo_bg_gradient_2', ['label' => __( 'Gradient Color 2', 'agencypro' ), 'section' => 'agencypro_promo_section', 'active_callback' => function() use ($wp_customize) { return 'gradient' === $wp_customize->get_setting('agencypro_promo_bg_type')->value(); }, 'priority' => 4]));
+    $wp_customize->add_setting( 'agencypro_promo_headline', ['default' => 'A Special Offer Just For You', 'sanitize_callback' => 'sanitize_text_field']);
+    $wp_customize->add_control( 'agencypro_promo_headline', ['label' => __( 'Headline', 'agencypro' ), 'section' => 'agencypro_promo_section', 'type' => 'text']);
+    $wp_customize->add_setting( 'agencypro_promo_text', ['default' => 'This is a special promotional section where you can highlight a service, a discount, or a unique value proposition to capture your visitor\'s attention.', 'sanitize_callback' => 'wp_kses_post']);
+    $wp_customize->add_control( 'agencypro_promo_text', ['label' => __( 'Content', 'agencypro' ), 'section' => 'agencypro_promo_section', 'type' => 'textarea']);
+    $wp_customize->add_setting( 'agencypro_promo_button_text', ['default' => 'Learn More', 'sanitize_callback' => 'sanitize_text_field']);
+    $wp_customize->add_control( 'agencypro_promo_button_text', ['label' => __( 'Button Text', 'agencypro' ), 'section' => 'agencypro_promo_section', 'type' => 'text']);
+    $wp_customize->add_setting( 'agencypro_promo_button_url', ['default' => '#', 'sanitize_callback' => 'esc_url_raw']);
+    $wp_customize->add_control( 'agencypro_promo_button_url', ['label' => __( 'Button URL', 'agencypro' ), 'section' => 'agencypro_promo_section', 'type' => 'url']);
+
+
     // Testimonials Section
     $wp_customize->add_section( 'agencypro_testimonials_section', array(
         'title'    => __( 'Testimonials', 'agencypro' ),
         'panel'    => 'agencypro_homepage_panel',
         'priority' => 50,
     ) );
+
+    // Display Testimonials Section
+    $wp_customize->add_setting( 'agencypro_testimonials_display', array(
+        'default'           => true,
+        'sanitize_callback' => 'wp_validate_boolean',
+    ) );
+    $wp_customize->add_control( 'agencypro_testimonials_display', array(
+        'label'   => __( 'Display Section', 'agencypro' ),
+        'section' => 'agencypro_testimonials_section',
+        'type'    => 'checkbox',
+        'priority' => 1,
+    ) );
+
+    // --- BG CONTROLS ---
+    $wp_customize->add_setting( 'agencypro_testimonials_bg_type', ['default' => 'none', 'sanitize_callback' => 'sanitize_text_field']);
+    $wp_customize->add_control( 'agencypro_testimonials_bg_type', ['label' => __( 'Background Type', 'agencypro' ), 'section' => 'agencypro_testimonials_section', 'type' => 'select', 'choices' => ['none' => 'None', 'color' => 'Color', 'image' => 'Image', 'gradient' => 'Gradient'], 'priority' => 2]);
+    $wp_customize->add_setting( 'agencypro_testimonials_bg_color', ['default' => '#1e1e1e', 'sanitize_callback' => 'sanitize_hex_color']);
+    $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'agencypro_testimonials_bg_color', ['label' => __( 'Background Color', 'agencypro' ), 'section' => 'agencypro_testimonials_section', 'active_callback' => function() use ($wp_customize) { return 'color' === $wp_customize->get_setting('agencypro_testimonials_bg_type')->value(); }, 'priority' => 3]));
+    $wp_customize->add_setting( 'agencypro_testimonials_bg_image', ['default' => '', 'sanitize_callback' => 'esc_url_raw']);
+    $wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, 'agencypro_testimonials_bg_image', ['label' => __( 'Background Image', 'agencypro' ), 'section' => 'agencypro_testimonials_section', 'active_callback' => function() use ($wp_customize) { return 'image' === $wp_customize->get_setting('agencypro_testimonials_bg_type')->value(); }, 'priority' => 3]));
+    $wp_customize->add_setting( 'agencypro_testimonials_bg_gradient_1', ['default' => '#1e1e1e', 'sanitize_callback' => 'sanitize_hex_color']);
+    $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'agencypro_testimonials_bg_gradient_1', ['label' => __( 'Gradient Color 1', 'agencypro' ), 'section' => 'agencypro_testimonials_section', 'active_callback' => function() use ($wp_customize) { return 'gradient' === $wp_customize->get_setting('agencypro_testimonials_bg_type')->value(); }, 'priority' => 3]));
+    $wp_customize->add_setting( 'agencypro_testimonials_bg_gradient_2', ['default' => '#121212', 'sanitize_callback' => 'sanitize_hex_color']);
+    $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'agencypro_testimonials_bg_gradient_2', ['label' => __( 'Gradient Color 2', 'agencypro' ), 'section' => 'agencypro_testimonials_section', 'active_callback' => function() use ($wp_customize) { return 'gradient' === $wp_customize->get_setting('agencypro_testimonials_bg_type')->value(); }, 'priority' => 4]));
+
+
     $wp_customize->add_setting( 'agencypro_testimonials_headline', array(
         'default'           => __( 'What Our Clients Say', 'agencypro' ),
         'sanitize_callback' => 'agencypro_sanitize_text',
@@ -222,27 +457,18 @@ function agencypro_customize_register( $wp_customize ) {
         'section' => 'agencypro_testimonials_section',
         'type'    => 'text',
     ) );
-    // Repeater-like functionality with 3 testimonials
-    for ($i = 1; $i <= 3; $i++) {
-        $wp_customize->add_setting( "agencypro_testimonial_text_$i", array(
-            'default'           => '',
-            'sanitize_callback' => 'wp_kses_post',
-        ) );
-        $wp_customize->add_control( "agencypro_testimonial_text_$i", array(
-            'label'   => sprintf(__( 'Testimonial #%s Text', 'agencypro' ), $i),
-            'section' => 'agencypro_testimonials_section',
-            'type'    => 'textarea',
-        ) );
-        $wp_customize->add_setting( "agencypro_testimonial_author_$i", array(
-            'default'           => '',
-            'sanitize_callback' => 'agencypro_sanitize_text',
-        ) );
-        $wp_customize->add_control( "agencypro_testimonial_author_$i", array(
-            'label'   => sprintf(__( 'Testimonial #%s Author', 'agencypro' ), $i),
-            'section' => 'agencypro_testimonials_section',
-            'type'    => 'text',
-        ) );
-    }
+
+    // Setting for number of testimonials to show
+    $wp_customize->add_setting( 'agencypro_testimonials_count', array(
+        'default'           => 3,
+        'sanitize_callback' => 'agencypro_sanitize_integer',
+    ) );
+    $wp_customize->add_control( 'agencypro_testimonials_count', array(
+        'label'   => __( 'Number of testimonials to show', 'agencypro' ),
+        'section' => 'agencypro_testimonials_section',
+        'type'    => 'number',
+        'input_attrs' => array( 'min' => 1, 'max' => 9, 'step' => 1 ),
+    ) );
 
     // CTA Section
     $wp_customize->add_section( 'agencypro_cta_section', array(
@@ -250,6 +476,32 @@ function agencypro_customize_register( $wp_customize ) {
         'panel'    => 'agencypro_homepage_panel',
         'priority' => 60,
     ) );
+
+    // Display CTA Section
+    $wp_customize->add_setting( 'agencypro_cta_display', array(
+        'default'           => true,
+        'sanitize_callback' => 'wp_validate_boolean',
+    ) );
+    $wp_customize->add_control( 'agencypro_cta_display', array(
+        'label'   => __( 'Display Section', 'agencypro' ),
+        'section' => 'agencypro_cta_section',
+        'type'    => 'checkbox',
+        'priority' => 1,
+    ) );
+
+    // --- BG CONTROLS ---
+    $wp_customize->add_setting( 'agencypro_cta_bg_type', ['default' => 'color', 'sanitize_callback' => 'sanitize_text_field']);
+    $wp_customize->add_control( 'agencypro_cta_bg_type', ['label' => __( 'Background Type', 'agencypro' ), 'section' => 'agencypro_cta_section', 'type' => 'select', 'choices' => ['none' => 'None', 'color' => 'Color', 'image' => 'Image', 'gradient' => 'Gradient'], 'priority' => 2]);
+    $wp_customize->add_setting( 'agencypro_cta_bg_color', ['default' => '#8e44ad', 'sanitize_callback' => 'sanitize_hex_color']);
+    $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'agencypro_cta_bg_color', ['label' => __( 'Background Color', 'agencypro' ), 'section' => 'agencypro_cta_section', 'active_callback' => function() use ($wp_customize) { return 'color' === $wp_customize->get_setting('agencypro_cta_bg_type')->value(); }, 'priority' => 3]));
+    $wp_customize->add_setting( 'agencypro_cta_bg_image', ['default' => '', 'sanitize_callback' => 'esc_url_raw']);
+    $wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, 'agencypro_cta_bg_image', ['label' => __( 'Background Image', 'agencypro' ), 'section' => 'agencypro_cta_section', 'active_callback' => function() use ($wp_customize) { return 'image' === $wp_customize->get_setting('agencypro_cta_bg_type')->value(); }, 'priority' => 3]));
+    $wp_customize->add_setting( 'agencypro_cta_bg_gradient_1', ['default' => '#8e44ad', 'sanitize_callback' => 'sanitize_hex_color']);
+    $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'agencypro_cta_bg_gradient_1', ['label' => __( 'Gradient Color 1', 'agencypro' ), 'section' => 'agencypro_cta_section', 'active_callback' => function() use ($wp_customize) { return 'gradient' === $wp_customize->get_setting('agencypro_cta_bg_type')->value(); }, 'priority' => 3]));
+    $wp_customize->add_setting( 'agencypro_cta_bg_gradient_2', ['default' => '#5e3370', 'sanitize_callback' => 'sanitize_hex_color']);
+    $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'agencypro_cta_bg_gradient_2', ['label' => __( 'Gradient Color 2', 'agencypro' ), 'section' => 'agencypro_cta_section', 'active_callback' => function() use ($wp_customize) { return 'gradient' === $wp_customize->get_setting('agencypro_cta_bg_type')->value(); }, 'priority' => 4]));
+
+
      $wp_customize->add_setting( 'agencypro_cta_headline', array(
         'default'           => __( 'Have a project in mind?', 'agencypro' ),
         'sanitize_callback' => 'agencypro_sanitize_text',
@@ -259,6 +511,16 @@ function agencypro_customize_register( $wp_customize ) {
         'label'   => __( 'Headline', 'agencypro' ),
         'section' => 'agencypro_cta_section',
         'type'    => 'text',
+    ) );
+
+    $wp_customize->add_setting( 'agencypro_cta_subheadline', array(
+        'default'           => 'Let\'s talk about your project. We are here to help you.',
+        'sanitize_callback' => 'wp_kses_post',
+    ) );
+    $wp_customize->add_control( 'agencypro_cta_subheadline', array(
+        'label'   => __( 'Sub-headline', 'agencypro' ),
+        'section' => 'agencypro_cta_section',
+        'type'    => 'textarea',
     ) );
      $wp_customize->add_setting( 'agencypro_cta_button_text', array(
         'default'           => __( 'Get a Quote', 'agencypro' ),
@@ -319,6 +581,37 @@ function agencypro_customize_register( $wp_customize ) {
         'selector' => '.site-info',
         'render_callback' => function() { return get_theme_mod('agencypro_copyright_text'); }
     ));
+
+    // Typography Panel
+    $wp_customize->add_panel( 'agencypro_typography_panel', array(
+        'title'       => __( 'Typography & Colors', 'agencypro' ),
+        'priority'    => 141,
+    ) );
+
+    $wp_customize->add_section( 'agencypro_typography_colors_section', array(
+        'title'    => __( 'Font Colors', 'agencypro' ),
+        'panel'    => 'agencypro_typography_panel',
+    ) );
+
+    // Body Text Color
+    $wp_customize->add_setting( 'agencypro_body_text_color', array(
+        'default'           => '#e0e0e0',
+        'sanitize_callback' => 'sanitize_hex_color',
+    ) );
+    $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'agencypro_body_text_color', array(
+        'label'   => __( 'Body Text Color', 'agencypro' ),
+        'section' => 'agencypro_typography_colors_section',
+    ) ) );
+
+    // Heading Text Color
+    $wp_customize->add_setting( 'agencypro_heading_text_color', array(
+        'default'           => '#ffffff',
+        'sanitize_callback' => 'sanitize_hex_color',
+    ) );
+    $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'agencypro_heading_text_color', array(
+        'label'   => __( 'Headings Color (H1-H6)', 'agencypro' ),
+        'section' => 'agencypro_typography_colors_section',
+    ) ) );
 }
 add_action( 'customize_register', 'agencypro_customize_register' );
 
