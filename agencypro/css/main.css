@@ -252,7 +252,6 @@ img {
         top: 100%;
         left: 0;
         width: 100%;
-        background: var(--color-dark-surface);
         flex-direction: column;
         padding: 10px 0;
     }
