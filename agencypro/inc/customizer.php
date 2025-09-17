@@ -153,6 +153,31 @@ function agencypro_customize_register( $wp_customize ) {
     $wp_customize->add_setting( 'agencypro_accent_color', ['default' => '#8e44ad', 'sanitize_callback' => 'sanitize_hex_color']);
     $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'agencypro_accent_color', ['label' => 'Primary Accent Color', 'section' => 'agencypro_colors_section']));
 
+    // Service Archive Section
+    $wp_customize->add_section( 'agencypro_service_archive_section', array(
+        'title'    => __( 'Service Archive', 'agencypro' ),
+        'panel'    => 'agencypro_theme_options_panel',
+        'description' => __( 'Customize the title and description for the main services page.', 'agencypro' ),
+    ) );
+    $wp_customize->add_setting( 'agencypro_service_archive_title', array(
+        'default'           => __( 'Our Services', 'agencypro' ),
+        'sanitize_callback' => 'sanitize_text_field',
+    ) );
+    $wp_customize->add_control( 'agencypro_service_archive_title', array(
+        'label'   => __( 'Archive Title', 'agencypro' ),
+        'section' => 'agencypro_service_archive_section',
+        'type'    => 'text',
+    ) );
+    $wp_customize->add_setting( 'agencypro_service_archive_description', array(
+        'default'           => __( 'A list of services we offer to our clients.', 'agencypro' ),
+        'sanitize_callback' => 'wp_kses_post',
+    ) );
+    $wp_customize->add_control( 'agencypro_service_archive_description', array(
+        'label'   => __( 'Archive Description', 'agencypro' ),
+        'section' => 'agencypro_service_archive_section',
+        'type'    => 'textarea',
+    ) );
+
     $wp_customize->add_panel( 'agencypro_typography_panel', array('title' => 'Typography & Colors', 'priority' => 141));
     $wp_customize->add_section( 'agencypro_typography_colors_section', array('title' => 'Font Colors', 'panel' => 'agencypro_typography_panel'));
     $wp_customize->add_setting( 'agencypro_body_text_color', ['default' => '#e0e0e0', 'sanitize_callback' => 'sanitize_hex_color']);

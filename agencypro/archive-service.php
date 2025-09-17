@@ -13,10 +13,12 @@ get_header();
 <main id="primary" class="site-main">
     <div class="container">
         <header class="page-header">
-            <?php
-                the_archive_title( '<h1 class="page-title">', '</h1>' );
-                the_archive_description( '<div class="archive-description">', '</div>' );
-            ?>
+            <h1 class="page-title">
+                <?php echo esc_html( get_theme_mod( 'agencypro_service_archive_title', __( 'Our Services', 'agencypro' ) ) ); ?>
+            </h1>
+            <div class="archive-description">
+                <?php echo wp_kses_post( get_theme_mod( 'agencypro_service_archive_description', __( 'A list of services we offer to our clients.', 'agencypro' ) ) ); ?>
+            </div>
         </header><!-- .page-header -->
 
         <?php if ( have_posts() ) : ?>
