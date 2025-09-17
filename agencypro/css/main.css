@@ -322,8 +322,12 @@ img {
 .testimonial-author { font-weight: 700; color: #fff; }
 
 /* CTA */
-.cta-section { background-color: var(--color-primary); }
-.cta-section .section-title, .cta-section .section-title::after { color: #fff; background-color: #fff; }
+.cta-section .section-title {
+    color: #fff;
+}
+.cta-section .section-title::after {
+    background-color: #fff;
+}
 
 /*--------------------------------------------------------------
 # Portfolio Page
