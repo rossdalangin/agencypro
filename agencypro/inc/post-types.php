@@ -44,7 +44,7 @@ if ( ! function_exists('agencypro_register_post_types') ) {
             'label'                 => __( 'Project', 'agencypro' ),
             'description'           => __( 'Portfolio projects', 'agencypro' ),
             'labels'                => $labels_project,
-            'supports'              => array( 'title', 'editor', 'thumbnail' ),
+            'supports'              => array( 'title', 'editor', 'thumbnail', 'custom-fields' ),
             'hierarchical'          => false,
             'public'                => true,
             'show_ui'               => true,
@@ -163,4 +163,65 @@ if ( ! function_exists('agencypro_register_post_types') ) {
 
     }
     add_action( 'init', 'agencypro_register_post_types', 0 );
+}
+
+
+if ( ! function_exists( 'agencypro_add_project_meta_boxes' ) ) {
+    function agencypro_add_project_meta_boxes() {
+        add_meta_box(
+            'agencypro_project_goals',
+            __( 'Project Goals', 'agencypro' ),
+            'agencypro_render_project_meta_boxes',
+            'project',
+            'normal',
+            'high'
+        );
+        add_meta_box(
+            'agencypro_project_results',
+            __( 'Results', 'agencypro' ),
+            'agencypro_render_project_meta_boxes',
+            'project',
+            'normal',
+            'high'
+        );
+    }
+    add_action( 'add_meta_boxes', 'agencypro_add_project_meta_boxes' );
+}
+
+
+if ( ! function_exists( 'agencypro_render_project_meta_boxes' ) ) {
+    function agencypro_render_project_meta_boxes( $post, $metabox ) {
+        wp_nonce_field( 'agencypro_save_project_meta_data', 'agencypro_project_meta_nonce' );
+
+        $field_id = $metabox['id'];
+        $field_value = get_post_meta( $post->ID, '_' . $field_id, true );
+
+        echo '<textarea id="' . esc_attr( $field_id ) . '" name="' . esc_attr( $field_id ) . '" style="width:100%;min-height:100px;">' . esc_textarea( $field_value ) . '</textarea>';
+    }
+}
+
+
+if ( ! function_exists( 'agencypro_save_project_meta_data' ) ) {
+    function agencypro_save_project_meta_data( $post_id ) {
+        if ( ! isset( $_POST['agencypro_project_meta_nonce'] ) || ! wp_verify_nonce( $_POST['agencypro_project_meta_nonce'], 'agencypro_save_project_meta_data' ) ) {
+            return;
+        }
+
+        if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+            return;
+        }
+
+        if ( ! current_user_can( 'edit_post', $post_id ) ) {
+            return;
+        }
+
+        if ( isset( $_POST['agencypro_project_goals'] ) ) {
+            update_post_meta( $post_id, '_agencypro_project_goals', sanitize_textarea_field( $_POST['agencypro_project_goals'] ) );
+        }
+
+        if ( isset( $_POST['agencypro_project_results'] ) ) {
+            update_post_meta( $post_id, '_agencypro_project_results', sanitize_textarea_field( $_POST['agencypro_project_results'] ) );
+        }
+    }
+    add_action( 'save_post', 'agencypro_save_project_meta_data' );
 }

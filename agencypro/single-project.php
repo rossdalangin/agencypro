@@ -50,11 +50,21 @@ get_header();
                     <div class="project-details">
                         <div class="project-goals">
                             <h3><?php esc_html_e( 'Project Goals', 'agencypro' ); ?></h3>
-                            <p>This is placeholder text. Project goals would be described here, perhaps using custom fields in a real project.</p>
+                            <?php
+                            $project_goals = get_post_meta( get_the_ID(), '_agencypro_project_goals', true );
+                            if ( ! empty( $project_goals ) ) {
+                                echo '<p>' . esc_html( $project_goals ) . '</p>';
+                            }
+                            ?>
                         </div>
                         <div class="project-results">
                             <h3><?php esc_html_e( 'Results', 'agencypro' ); ?></h3>
-                            <p>This is placeholder text. Key metrics and results of the project would be highlighted here.</p>
+                             <?php
+                            $project_results = get_post_meta( get_the_ID(), '_agencypro_project_results', true );
+                            if ( ! empty( $project_results ) ) {
+                                echo '<p>' . esc_html( $project_results ) . '</p>';
+                            }
+                            ?>
                         </div>
                     </div>
 
