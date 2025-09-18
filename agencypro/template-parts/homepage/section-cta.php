@@ -1,11 +1,13 @@
 <?php
 /**
  * Template part for displaying the CTA section on the homepage.
+ *
  * @package AgencyPro
  */
-$headline = get_theme_mod( 'agencypro_cta_headline', 'Have a project?' );
-$subheadline = get_theme_mod( 'agencypro_cta_subheadline', 'Let\'s talk.' );
-$button_text = get_theme_mod( 'agencypro_cta_button_text', 'Get a Quote' );
+
+$headline = get_theme_mod( 'agencypro_cta_headline', __( 'Have a project in mind?', 'agencypro' ) );
+$subheadline = get_theme_mod( 'agencypro_cta_subheadline', 'Let\'s talk about your project. We are here to help you.' );
+$button_text = get_theme_mod( 'agencypro_cta_button_text', __( 'Get a Quote', 'agencypro' ) );
 $button_url = get_theme_mod( 'agencypro_cta_button_url', '#' );
 ?>
 <section id="cta" class="homepage-section cta-section">

@@ -1,10 +1,12 @@
 <?php
 /**
  * Template part for displaying the Promo section on the homepage.
+ *
  * @package AgencyPro
  */
-$headline = get_theme_mod( 'agencypro_promo_headline', 'A Special Offer' );
-$text = get_theme_mod( 'agencypro_promo_text', 'Promotional text here.' );
+
+$headline = get_theme_mod( 'agencypro_promo_headline', 'A Special Offer Just For You' );
+$text = get_theme_mod( 'agencypro_promo_text', 'This is a special promotional section...' );
 $button_text = get_theme_mod( 'agencypro_promo_button_text', 'Learn More' );
 $button_url = get_theme_mod( 'agencypro_promo_button_url', '#' );
 ?>

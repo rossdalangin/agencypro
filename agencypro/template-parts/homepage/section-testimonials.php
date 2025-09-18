@@ -1,12 +1,21 @@
 <?php
 /**
  * Template part for displaying the Testimonials section on the homepage.
+ *
  * @package AgencyPro
  */
-$headline = get_theme_mod( 'agencypro_testimonials_headline', 'What Clients Say' );
+
+$headline = get_theme_mod( 'agencypro_testimonials_headline', __( 'What Our Clients Say', 'agencypro' ) );
 $count = get_theme_mod( 'agencypro_testimonials_count', 3 );
-$query = new WP_Query(['post_type' => 'testimonial', 'posts_per_page' => absint( $count ), 'no_found_rows' => true]);
-if ( ! $query->have_posts() ) { return; }
+$query = new WP_Query( array(
+    'post_type'      => 'testimonial',
+    'posts_per_page' => absint( $count ),
+    'no_found_rows'  => true,
+) );
+
+if ( ! $query->have_posts() ) {
+    return;
+}
 ?>
 <section id="testimonials" class="homepage-section testimonials-section">
     <div class="container">
@@ -15,7 +24,9 @@ if ( ! $query->have_posts() ) { return; }
             <?php while ( $query->have_posts() ) : $query->the_post(); ?>
             <div class="testimonial-item">
                 <?php if ( has_post_thumbnail() ) : ?>
-                    <div class="testimonial-image"><?php the_post_thumbnail( 'thumbnail' ); ?></div>
+                    <div class="testimonial-image">
+                        <?php the_post_thumbnail( 'thumbnail' ); ?>
+                    </div>
                 <?php endif; ?>
                 <div class="testimonial-content">
                     <blockquote class="testimonial-text"><?php the_content(); ?></blockquote>
